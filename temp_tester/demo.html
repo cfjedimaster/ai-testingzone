@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+	<style>
+	body {
+		margin:30px;
+	}
+	</style>
+</head>
+<body>
+
+<h1>Temperature Demo</h1>
+
+<p>
+Enter your prompt below. This prompt will then be sent to <a href="https://gemini.google.com/">Google Gemini's API</a> with various different temperature settings. You will see two responses for each of the various temperature settings. 
+</p>
+
+<form>
+	<fieldset>
+	<label for="prompt">Prompt</label>
+	<textarea id="prompt">Tell me a story about cats.</textarea>
+	<input class="button-primary" id="submitBtn" type="submit" value="Begin Test">
+	</fieldset>
+</form>
+
+<p id="status"><i></i></p>
+
+<div id="results"></div>
+
+<script>
+// Testing ranges for temperature
+const tempRanges = [0, 0.3, 0.6, 1];
+
+// How many times to test per temp.
+const perTemp = 2;
+
+let $status, $results;
+
+document.addEventListener('DOMContentLoaded', init, false);
+async function init() {
+	document.querySelector('#submitBtn').addEventListener('click', handleSubmit, false);
+	$status = document.querySelector('#status i');
+	$results = document.querySelector('#results');
+}
+
+async function handleSubmit(e) {
+	e.preventDefault();
+	$results.innerHTML = '';
+
+	let prompt = document.querySelector('#prompt').value.trim();
+	if(prompt === '') return;
+
+	/*
+	We are going to loop perTemp times for each tempRange. In order to not
+	get stopped by Gemini for too many requests, and to provide feedback to the user, 
+	I'll report after each tempRange
+	*/
+	for(temp of tempRanges) {
+		$status.innerText = `Getting results for temperature ${temp}.`;
+		let promises = [];
+		for(let i=0; i<perTemp; i++) {
+			promises.push(getResult(prompt, temp));
+		}
+
+		let results = await Promise.all(promises);
+		let html = `<h2>Temperature ${temp}</h2>`;
+		for(let i=0; i < results.length; i++) {
+			html += `
+<p>
+Result #${i+1}:<br/>
+${results[i]}
+</p>`;
+		}
+		$results.innerHTML += html;
+		console.log(results);
+	}
+
+	$status.innerText = ``;
+	
+}
+
+async function getResult(prompt, temperature) {
+	console.log(`Calling getResult with prompt ${prompt} and ${temperature}`);
+	let body = {
+		prompt, 
+		temperature
+	};
+	let req = await fetch('/api', { method: 'POST', body: JSON.stringify(body)});
+	return await req.json();
+}
+
+</script>
+
+</body>
+</html>
