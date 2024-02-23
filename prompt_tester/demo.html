@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Prompt Tester</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+	<style>
+	body {
+		margin:30px;
+	}
+
+	hr {
+		margin: 30px 0;   
+		border: 0;
+		height: 4px;
+		background: #ff0000;
+		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ff0000), color-stop(25%,#ffff00), color-stop(50%,#00ff00), color-stop(75%,#00ffff), color-stop(100%,#0000ff));
+		background: -webkit-linear-gradient(-45deg, #ff0000 0%,#ffff00 25%,#00ff00 50%,#00ffff 75%,#0000ff 100%);
+		background: -moz-linear-gradient(-45deg, #ff0000 0%, #ffff00 25%, #00ff00 50%, #00ffff 75%, #0000ff 100%);
+		background: -o-linear-gradient(-45deg, #ff0000 0%,#ffff00 25%,#00ff00 50%,#00ffff 75%,#0000ff 100%);
+		background: -ms-linear-gradient(-45deg, #ff0000 0%,#ffff00 25%,#00ff00 50%,#00ffff 75%,#0000ff 100%);
+		background: linear-gradient(-45deg, #ff0000 0%,#ffff00 25%,#00ff00 50%,#00ffff 75%,#0000ff 100%);
+	}
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<h1>Prompt Tester</h1>
+
+<p>
+This tool helps you see the result of multiple prompts at the same time. The idea is to use similar prompts with different phrasing 
+to see how it impacts the result.
+</p>
+
+<div id="prompts">
+</div>
+
+<template id="promptRow">
+<div class="row">
+	<div class="column column-33"><textarea placeholder="Enter your prompt.">why are cats better than dogs?</textarea></div>
+	<div class="column column-67 result"></div>
+</div>
+<hr>
+</template>
+
+
+<div class="float-right">
+<button id="addPrompt">Add Prompt</button> <button id="generateResults">Generate Results</button>
+</div>
+
+<script>
+let $template, $prompts, $addPromptsBtn, $generateResultsBtn;
+let promptCount = 0;
+
+document.addEventListener('DOMContentLoaded', init, false);
+async function init() {
+	
+	$addPromptsBtn = document.querySelector('#addPrompt');
+	$addPromptsBtn.addEventListener('click',  addPrompt, false);
+	$generateResultsBtn = document.querySelector('#generateResults')
+	$generateResultsBtn.addEventListener('click',  generateResults, false);
+	$template = document.querySelector('#promptRow');
+	$prompts = document.querySelector('#prompts');
+
+	addPrompt();
+}
+
+function addPrompt() {
+	promptCount++;
+	const newPrompt = $template.content.cloneNode(true);
+	$prompts.append(newPrompt);
+}
+
+async function generateResults() {
+	// disable add prompt and generate
+	$addPromptsBtn.setAttribute('disabled', 'disabled');
+	$generateResultsBtn.setAttribute('disabled', 'disabled');
+
+	let $results = document.querySelectorAll('div.result');
+	// clear any previous results
+	$results.forEach(r => r.innerHTML = '');
+
+	/*
+	gather prompts from the inputs
+	*/
+	let prompts = [];
+	let $fields = document.querySelectorAll('#prompts textarea');
+	for(f of $fields) prompts.push(f.value);
+
+	let promises = [];
+	for(p of prompts) promises.push(getResult(p));
+	let results = await Promise.all(promises);
+
+	// assign results to result area for each, handle errors - later
+	// there's a one to one correspondance between our array of results and the result div
+	for(let i=0;i<results.length;i++) {
+		$results[i].innerHTML = marked.parse(results[i]);
+	}
+
+	$addPromptsBtn.removeAttribute('disabled');
+	$generateResultsBtn.removeAttribute('disabled');
+
+}
+
+async function getResult(p) {
+	console.log('get result for',p);
+	let req = await fetch('/api', { method:'POST', body: JSON.stringify({prompt:p})});
+	let result = await req.json();
+	// todo, handle error
+	return result;
+}
+</script>
+
+</body>
+</html>
