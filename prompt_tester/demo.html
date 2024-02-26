@@ -40,7 +40,7 @@ to see how it impacts the result.
 
 <template id="promptRow">
 <div class="row">
-	<div class="column column-33"><textarea placeholder="Enter your prompt.">why are cats better than dogs?</textarea></div>
+	<div class="column column-33"><textarea placeholder="Enter your prompt."></textarea></div>
 	<div class="column column-67 result"></div>
 </div>
 <hr>
@@ -97,7 +97,8 @@ async function generateResults() {
 	// assign results to result area for each, handle errors - later
 	// there's a one to one correspondance between our array of results and the result div
 	for(let i=0;i<results.length;i++) {
-		$results[i].innerHTML = marked.parse(results[i]);
+		if(results[i].response) $results[i].innerHTML = marked.parse(results[i].response);
+		else if(results[i].error) $results[i].innerHTML = `<strong>Error with Prompt: </strong> ${results[i].error}`;
 	}
 
 	$addPromptsBtn.removeAttribute('disabled');
@@ -107,9 +108,10 @@ async function generateResults() {
 
 async function getResult(p) {
 	console.log('get result for',p);
-	let req = await fetch('/api', { method:'POST', body: JSON.stringify({prompt:p})});
+	// quick return on empty prompt
+	if(p.trim() === '') return { response:'<strong>Enter a prompt.</strong>' };
+	let req = await fetch('/api', { method:'POST', body: JSON.stringify({prompt:p.trim()})});
 	let result = await req.json();
-	// todo, handle error
 	return result;
 }
 </script>

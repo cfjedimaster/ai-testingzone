@@ -35,37 +35,46 @@ async function callGemini(text) {
 		safetySettings,
 	});
 
-	// To do, handle block reasons. Ray, here's a sample:
 	/*
+	Possible enhancement, report which safetyCategory was the highest prob
 {
-        "response": {
-                "promptFeedback": {
-                        "blockReason": "SAFETY",
-                        "safetyRatings": [
-                                {
-                                        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                                        "probability": "NEGLIGIBLE"
-                                },
-                                {
-                                        "category": "HARM_CATEGORY_HATE_SPEECH",
-                                        "probability": "NEGLIGIBLE"
-                                },
-                                {
-                                        "category": "HARM_CATEGORY_HARASSMENT",
-                                        "probability": "MEDIUM"
-                                },
-                                {
-                                        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                                        "probability": "NEGLIGIBLE"
-                                }
-                        ]
-                }
-        }
+	"safetyRatings": [
+			{
+					"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+					"probability": "NEGLIGIBLE"
+			},
+			{
+					"category": "HARM_CATEGORY_HATE_SPEECH",
+					"probability": "NEGLIGIBLE"
+			},
+			{
+					"category": "HARM_CATEGORY_HARASSMENT",
+					"probability": "MEDIUM"
+			},
+			{
+					"category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+					"probability": "NEGLIGIBLE"
+			}
+	]
 }
 	*/
-	const response = result.response.candidates[0].content.parts[0].text;
+	//console.log(JSON.stringify(result,null,'\t'));
+
+	try {
+
+		if(result.response.promptFeedback && result.response.promptFeedback.blockReason) {
+
+			return { error: `Blocked for ${result.response.promptFeedback.blockReason}` };
+		}
+		const response = result.response.candidates[0].content.parts[0].text;
+		return { response };
+	} catch(e) {
+		// better handling
+		return {
+			error:e.message
+		}
+	}
 	
-	return response;
 }
 
 async function handler(req, res) {
