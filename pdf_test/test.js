@@ -140,7 +140,7 @@ async function extractJob(asset, token, clientId) {
 
 }
 
-async function runPrompt(text, prompt) {
+async function runPrompt(text, question) {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME }, { apiVersion:'v1beta'});
 
@@ -177,7 +177,7 @@ Given this document (delimited by dashes):
 ${text}
 -------------------------------------------
 
-${prompt}`},
+${question}`},
   ];
 
   const result = await model.generateContent({
