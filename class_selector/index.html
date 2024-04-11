@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>Class Suggestor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+<style>
+body {
+	margin:50px;
+}
+
+[x-cloak] { display: none !important }
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+
+<h1>Class Suggester</h1>
+<p>
+This application will stats for a new Dungeons and Dragons character and then let you ask Gemini what class would best work
+with those stats.
+</p>
+
+<div class="container" x-data="classSuggester" x-cloak>
+
+	<div class="row">
+
+		<!-- This is where we will render the attributes and scores... -->
+		<div class="column">
+		<h2>Your Stats</h2>
+		<ul>
+			<li>Strength: <span x-text="strVal"></span></li>
+			<li>Dexterity: <span x-text="dexVal"></span></li>
+			<li>Constitution: <span x-text="conVal"></span></li>
+			<li>Intelligence: <span x-text="intVal"></span></li>
+			<li>Wisdom: <span x-text="wisVal"></span></li>
+			<li>Charisma: <span x-text="chrVal"></span></li>
+		</ul>
+
+		<button @click="roll">Roll Stats</button>
+		</div>
+
+		<!-- This is where we will render Gemini's response. -->
+		<div class="column">
+			<template x-if="statsReady">
+				<div>
+					<p>
+					<button @click="getSuggestion">Get Suggested Class</button>
+					</p>
+					<dix x-html="result"></div>
+				</div>
+			</template>
+		</div>
+
+	</div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
