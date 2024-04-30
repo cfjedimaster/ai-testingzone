@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+	<title>Chat Demo</title>
+	<style>
+	body {
+		margin: 20px;
+	}
+
+	textarea {
+		height: 500px;
+	}
+	</style>
+
+</head>
+<body>
+
+<div class="container">
+<h2>Chat Demo</h2>
+
+
+<div class="row">
+	<div class="column column-100"><textarea id="chat"></textarea></div>
+</div>
+
+<div class="row">
+	<div class="column column-75"><input id="message" placeholder="Enter message."></div>
+	<div class="column column-25"><button id="sendMessage" disabled>Send Message</button></div>
+</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', init, false);
+
+let $chat, $message, $button;
+
+function init() {
+	$chat = document.querySelector('#chat');
+	$message = document.querySelector('#message');
+	$button = document.querySelector('#sendMessage');
+
+	$button.addEventListener('click', sendMessage, false);
+	$button.removeAttribute('disabled');
+
+}
+
+async function sendMessage() {
+	let msg = $message.value.trim();
+	if(msg === '') return;
+	console.log('sending msg', msg);
+
+	$message.value = '';
+	$chat.value += `You: "${msg}"\n\n`;
+	$button.setAttribute('disabled','disabled');
+	let req = await fetch('/chat', {
+		method:'POST',
+		body:msg
+	});
+	let response = await req.text();
+
+	$chat.value += `Gemini: ${response}\n\n`;
+	$button.removeAttribute('disabled');
+
+}
+
+</script>
+</body>
+</html>
