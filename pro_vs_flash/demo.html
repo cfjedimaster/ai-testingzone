@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Pro Versus Flash</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+	<style>
+	body {
+		margin:30px;
+	}
+
+	textarea {
+		min-height: 200px;
+	}
+
+	hr {
+		margin: 30px 0;   
+		border: 0;
+		height: 4px;
+		background: linear-gradient(-45deg, #ff0000 0%,#ffff00 25%,#00ff00 50%,#00ffff 75%,#0000ff 100%);
+	}
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+<h1>Pro vs Flash</h1>
+
+<p>
+This tool lets you enter one prompt and see the result when using Gemini Pro 1.5 vs Flash. The result and the execution time is returned.
+</p>
+
+<div class="row">
+	<div class="column column-33"><textarea placeholder="Enter your prompt." id="prompt">Why are cats better?</textarea></div>
+	<div class="column column-67 result"></div>
+</div>
+
+
+<div class="float-right">
+<button id="generateResults">Generate Results</button>
+</div>
+
+<div id="results"></div>
+
+<script>
+let $prompt, $generateResultsBtn, $results;
+
+document.addEventListener('DOMContentLoaded', init, false);
+async function init() {
+	$prompt = document.querySelector('#prompt')
+	$results = document.querySelector('#results')
+
+	$generateResultsBtn = document.querySelector('#generateResults')
+	$generateResultsBtn.addEventListener('click',  generateResults, false);	
+}
+
+async function generateResults() {
+	let prompt = $prompt.value.trim();
+	if(prompt === '') return;
+
+	$results.innerHTML = '';
+
+	// While this is nice - I don't _want_ to wait for both since part of the point of this is to see speed diffs
+	// let [ pro_result, flash_result ] = await Promise.all([getResult(prompt, 'pro'), getResult(prompt,'flash')]);
+
+	getResult(prompt, 'pro').then(r => {
+		renderResult(r, 'Pro');
+	});
+
+	getResult(prompt, 'flash').then(r => {
+		renderResult(r, 'Flash');
+	});
+
+	$generateResultsBtn.removeAttribute('disabled');
+
+}
+
+async function getResult(prompt, model) {
+	return new Promise(async (resolve, reject) => {
+		let req = await  fetch('/api', {
+			method:'POST', 
+			body:JSON.stringify({prompt, model})
+		});
+		resolve(await req.json());
+	});
+}
+
+function renderResult(r, type) {
+	let html = `
+<hr>
+<div>
+<h2>Results from ${type} (duration: ${r.duration}ms)</h2>
+
+${marked.parse(r.airesult)}
+</div>
+	`;
+
+	$results.innerHTML += html;
+	console.log(r, type);
+}
+</script>
+
+</body>
+</html>
