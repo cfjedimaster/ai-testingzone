@@ -33,10 +33,6 @@ If you no longer wish to participate in The Stream Team by Forsta, please click 
 The Stream Team is operated by Forsta
 300 Seventh Ave., 3rd Floor, New York, NY 10001`);
 tests.good.push(`
-None selected 
-
-Skip to content
-Using Gmail with screen readers
 Conversations
 Introducing Polls on Buy Me a Coffee 🎉
 

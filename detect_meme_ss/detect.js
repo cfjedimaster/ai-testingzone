@@ -59,7 +59,7 @@ async function detectPhoto(path) {
   return response.text();
 }
 
-const root = '/mnt/c/Users/ray/Desktop/source_for_detector/';
+const root = './source_for_detector/';
 let files = await fs.readdir(root);
 for(const file of files) {
 	console.log(`Check to see if ${file} is a photo, meme, or screenshot...`);
