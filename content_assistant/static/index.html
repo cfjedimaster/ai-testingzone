@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link
+	rel="stylesheet"
+	media="(prefers-color-scheme:light)"
+	href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/light.css"
+	/>
+	<link
+	rel="stylesheet"
+	media="(prefers-color-scheme:dark)"
+	href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/themes/dark.css"
+	onload="document.documentElement.classList.add('sl-theme-dark');"
+	/>
+	<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.1/cdn/shoelace-autoloader.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked@13.0.0/lib/marked.umd.min.js"></script>
+	<style>
+	body {
+  		font-family: var(--sl-font-sans);  
+		margin: 50px;
+	}
+	</style>
+</head>
+<body>
+
+<h2>Content Assistant</h2>
+
+<p>
+This tool attempts to provide feedback and guidance for writers. You provide a set of requirements or desired results and then 
+provide the initial draft of the content. Gemini's APIs will then be used to compare the content against the requirements. 
+</p>
+
+<form>
+<p>
+<sl-textarea id="description" label="Requirements/Desired Results" help-text="Describe what the content should cover and what results it should help deliver." required value="An essay about the Civil War and it's main causes."></sl-textarea>
+</p>
+
+<p>
+<sl-textarea id="content" label="Content" resize="auto" required value="The Civil War was caused by people being mean to each other.">
+</sl-textarea>
+</p>
+
+<p>
+<sl-button id="submitBtn" type="submit" variant="primary">Submit for Analysis</sl-button>
+</p>
+</form>
+
+<p id="results">
+</p>
+
+<script src="app.js"></script>
+
+</body>
+</html>
