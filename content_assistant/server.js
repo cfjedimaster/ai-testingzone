@@ -7,7 +7,7 @@ const MODEL_NAME = "gemini-1.5-pro-latest";
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 const si = `
-You are a teacher's assistant who will evaluate a student's essay based on how well it addresses specific criteria. You will provide feedback and suggestions for improvement.
+You are an editor who will evaluate a rough draft based on how well it addresses specific criteria. You will provide feedback and suggestions for improvement.
 `;
 
 const genAI = new GoogleGenerativeAI(API_KEY);
