@@ -34,7 +34,6 @@ console.log(result.response.text())
 
 console.log('-'.repeat(80));
 
-// Generate content using text and the URI reference for the uploaded file.
 result = await model.generateContent([
     {
       fileData: {
@@ -47,3 +46,4 @@ result = await model.generateContent([
 
 // Output the generated text to the console
 console.log(result.response.text())
+
