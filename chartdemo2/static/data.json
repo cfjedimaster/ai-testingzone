@@ -1,0 +1,112 @@
+{
+	"sales": [
+		{ 
+			"date":"1/2024", 
+			"items": [
+				{ "name": "Apples", "total": 541 },
+				{ "name": "Bananas", "total": 218 },
+				{ "name": "Cherries", "total": 490 },
+				{ "name": "Donuts", "total": 451 }
+			]
+		},
+		{ 
+			"date":"2/2024", 
+			"items": [
+				{ "name": "Apples", "total": 558 },
+				{ "name": "Bananas", "total": 198 },
+				{ "name": "Cherries", "total": 452 },
+				{ "name": "Donuts", "total": 491 }
+			]
+		},
+		{ 
+			"date":"3/2024", 
+			"items": [
+				{ "name": "Apples", "total": 521 },
+				{ "name": "Bananas", "total": 312 },
+				{ "name": "Cherries", "total": 402 },
+				{ "name": "Donuts", "total": 645 }
+			]
+		},
+		{ 
+			"date":"4/2024", 
+			"items": [
+				{ "name": "Apples", "total": 219 },
+				{ "name": "Bananas", "total": 286 },
+				{ "name": "Cherries", "total": 459 },
+				{ "name": "Donuts", "total": 582 }
+			]
+		},
+		{ 
+			"date":"5/2024", 
+			"items": [
+				{ "name": "Apples", "total": 399 },
+				{ "name": "Bananas", "total": 257 },
+				{ "name": "Cherries", "total": 612 },
+				{ "name": "Donuts", "total": 716 }
+			]
+		},
+		{ 
+			"date":"6/2024", 
+			"items": [
+				{ "name": "Apples", "total": 421 },
+				{ "name": "Bananas", "total": 291 },
+				{ "name": "Cherries", "total": 575 },
+				{ "name": "Donuts", "total": 699 }
+			]
+		},
+		{ 
+			"date":"7/2024", 
+			"items": [
+				{ "name": "Apples", "total": 480 },
+				{ "name": "Bananas", "total": 326 },
+				{ "name": "Cherries", "total": 512 },
+				{ "name": "Donuts", "total": 726 }
+			]
+		},
+		{ 
+			"date":"8/2024", 
+			"items": [
+				{ "name": "Apples", "total": 506 },
+				{ "name": "Bananas", "total": 361 },
+				{ "name": "Cherries", "total": 408 },
+				{ "name": "Donuts", "total": 782 }
+			]
+		},
+		{ 
+			"date":"9/2024", 
+			"items": [
+				{ "name": "Apples", "total": 590 },
+				{ "name": "Bananas", "total": 125 },
+				{ "name": "Cherries", "total": 462 },
+				{ "name": "Donuts", "total": 854 }
+			]
+		},
+		{ 
+			"date":"10/2024", 
+			"items": [
+				{ "name": "Apples", "total": 647 },
+				{ "name": "Bananas", "total": 80 },
+				{ "name": "Cherries", "total": 412 },
+				{ "name": "Donuts", "total": 931 }
+			]
+		},
+		{ 
+			"date":"11/2024", 
+			"items": [
+				{ "name": "Apples", "total": 701 },
+				{ "name": "Bananas", "total": 94 },
+				{ "name": "Cherries", "total": 564 },
+				{ "name": "Donuts", "total": 989 }
+			]
+		},
+		{ 
+			"date":"12/2024", 
+			"items": [
+				{ "name": "Apples", "total": 788 },
+				{ "name": "Bananas", "total": 101 },
+				{ "name": "Cherries", "total": 508 },
+				{ "name": "Donuts", "total": 1021 }
+			]
+		}
+	]
+}
