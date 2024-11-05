@@ -4,13 +4,14 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/ge
 
 const PRO_MODEL_NAME = "gemini-1.5-pro-latest";
 const FLASH_MODEL_NAME = "gemini-1.5-flash-latest"
+const FLASH_MODEL_8B_NAME = "gemini-1.5-flash-8b";
 
 const API_KEY = process.env.GOOGLE_API_KEY;
-
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const pro_model = genAI.getGenerativeModel({ model: PRO_MODEL_NAME });
 const flash_model = genAI.getGenerativeModel({ model: FLASH_MODEL_NAME });
+const flash_model_8B = genAI.getGenerativeModel({ model: FLASH_MODEL_8B_NAME });
 
 async function callGemini(text, model) {
 
@@ -33,15 +34,15 @@ async function callGemini(text, model) {
     	{text},
   	];
 
-	const result = await model.generateContent({
-		contents: [{ role: "user", parts }],
-		generationConfig,
-		safetySettings,
-	});
-
 	//console.log(JSON.stringify(result,null,'\t'));
 
 	try {
+
+		const result = await model.generateContent({
+			contents: [{ role: "user", parts }],
+			generationConfig,
+			safetySettings,
+		});
 
 		if(result.response.promptFeedback && result.response.promptFeedback.blockReason) {
 
@@ -50,6 +51,7 @@ async function callGemini(text, model) {
 		return result.response.text();
 	} catch(e) {
 		// better handling
+		console.log('Error', e);
 		return {
 			error:e.message
 		}
@@ -79,9 +81,12 @@ async function handler(req, res) {
 			if(body.model === 'pro') {
 				console.log('using pro');
 				airesult = await callGemini(body.prompt,pro_model);
-			} else {
+			} else if(body.model === 'flash') {
 				console.log('using flash');
 				airesult = await callGemini(body.prompt,flash_model);
+			} else {
+				console.log('using flash8b');
+				airesult = await callGemini(body.prompt,flash_model_8B);
 			}
 			let duration = (new Date()) - now;
 			let result = { duration, airesult };
