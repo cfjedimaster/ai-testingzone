@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+
+<translate-text>
+As with everything else I've shared in this space, you should consider this real early in terms of implementation, but once you get past some of the hurdles enabling the feature (something that's going to be far easier later in the development cycle), translation is shockingly simple.
+</translate-text>
+
+<script>
+class TranslateText extends HTMLElement {
+
+	constructor() {
+		super();
+	}
+	
+	async connectedCallback() {
+		
+		/*
+		Detection routine for ai translation
+		*/
+		if(!window.translation) {
+			console.log('window.translation not supported');
+			return;
+		}
+		
+		// check if can detect 
+		let canDetect = await window.translation.canDetect();
+		if(canDetect !== 'readily') {
+			console.log('window.translation.canDetect returned false.');
+			return;
+		} 
+		
+		let detector = await window.translation.createDetector();
+		console.log('calling detect...');
+		let results = await detector.detect(this.innerText);
+		// We don't care about the confidence :) 
+		this.sourceLanguage = results[0].detectedLanguage;
+		//console.log('Result from detector', results);
+		
+		//do i support translating to my language?
+		this.myLanguage = navigator.language;
+		// temp hack so I can test ;)
+		this.myLanguage = 'fr';
+		
+		if(this.myLanguage === this.sourceLanguage) {
+			console.log('No need to translate');
+			return;
+		}
+		console.log(this.myLanguage);
+
+		//can i translate from source to my lange?
+		let pair = {
+			sourceLanguage:this.sourceLanguage, 
+			targetLanguage:this.myLanguage
+		}
+	
+		let canTranslate = await translation.canTranslate({
+			sourceLanguage:this.sourceLanguage,
+			targetLanguage:this.myLanguage
+		});
+
+		console.log('can i translate it?',canTranslate);
+		if(canTranslate !== 'readily') {
+			console.log('Unable to translate');
+			return;
+		}
+
+		let translator = await translation.createTranslator(pair);
+		let translated = await translator.translate(this.innerText);
+		console.log('translation',translated);
+		this.innerText = translated;
+	}
+	
+}
+
+if(!customElements.get('translate-text')) customElements.define('translate-text', TranslateText);
+
+</script>
+</body>
+</html>
