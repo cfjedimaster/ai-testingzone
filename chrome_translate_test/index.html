@@ -7,7 +7,7 @@
 <body>
 
 <translate-text>
-As with everything else I've shared in this space, you should consider this real early in terms of implementation, but once you get past some of the hurdles enabling the feature (something that's going to be far easier later in the development cycle), translation is shockingly simple.
+Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.
 </translate-text>
 
 <script>
@@ -37,6 +37,7 @@ class TranslateText extends HTMLElement {
 		let detector = await window.translation.createDetector();
 		console.log('calling detect...');
 		let results = await detector.detect(this.innerText);
+
 		// We don't care about the confidence :) 
 		this.sourceLanguage = results[0].detectedLanguage;
 		//console.log('Result from detector', results);

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+	<style>
+	body {
+		margin: 20px;
+	}
+	</style>
+</head>
+<body>
+
+<h2>Recipe Scraper</h2>
+
+<div class="row">
+	<div class="column column-75"><input type="url" id="url" placeholder="URL of Recipe" value="https://www.allrecipes.com/recipe/10275/classic-peanut-butter-cookies"></div>
+	<div class="column column-25"><button id="parseBtn">Parse</button></div>
+</div>
+
+<div id="results"></div>
+
+<script>
+let $url, $results, $parseBtn;
+
+document.addEventListener('DOMContentLoaded', init, false);
+
+function init() {
+	$url = document.querySelector('#url');
+	$results = document.querySelector('#results');
+	$parseBtn = document.querySelector('#parseBtn');
+
+	$parseBtn.addEventListener('click', doParse, false);
+	
+}
+
+async function doParse() {
+	let url = $url.value.trim();
+	if(url === '') return;
+	console.log(`attempt to parse ${url}`);
+
+	let req = await fetch('/api', {
+		method:'POST', 
+		body: JSON.stringify({url})
+	});
+	let result = await req.json();
+	console.log(result);
+
+	// Make it pretty
+	let html = `<h2>${result.name}</h2>`;
+
+	html += '<h3>Ingredients</h3><ul>';
+	result.ingredients.forEach(i => {
+		html += `<li>${i}</li>`;
+	});
+
+	html += '</ul><h3>Steps</h3><ul>';
+	result.steps.forEach(s => {
+		html += `<li>${s}</li>`;
+	});
+
+	html += '</ul>';
+	$results.innerHTML = html;
+}	
+
+</script>
+</body>
+</html>
+
