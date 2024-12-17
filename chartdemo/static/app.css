@@ -1,0 +1,8 @@
+body {
+	font-family: var(--sl-font-sans);
+}
+
+#chartWrapper {
+	width: 800px;
+	height: 400px;
+}

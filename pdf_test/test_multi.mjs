@@ -26,6 +26,7 @@ const uploadResponse2 = await fileManager.uploadFile("romeo-and-juliet.pdf", {
 console.log('Uploaded both files.');
 
 // Generate content using text and the URI reference for the uploaded file.
+let ts = new Date();
 let result = await model.generateContent([
     {
       fileData: {
@@ -43,6 +44,8 @@ let result = await model.generateContent([
     { text: "Compare these two plays and discuss similar themes as well as major differences." },
   ]);
 
+let ts2 = new Date();
+console.log(`Time in seconds to generate: ${(ts2.getTime() - ts.getTime())/1000}`);
 // Output the generated text to the console
 console.log(result.response.text())
 

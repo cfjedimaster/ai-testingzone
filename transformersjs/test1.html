@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style>
+	textarea {
+		width: 500px;
+		height: 200px;
+	}
+	</style>
+</head>
+<body>
+
+<p>
+	Type input in the box below and the perceived sentiment will be displayed.
+</p>
+<textarea id="input"></textarea>
+<div id="result"></div>
+
+<script type="module">
+import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2';
+
+const classifier = await pipeline('sentiment-analysis');
+let $result = document.querySelector('#result');
+let $input = document.querySelector('textarea');
+$input.addEventListener('input', doSentiment, false);
+
+async function doSentiment() {
+	if($input.value.trim() === '') return;
+	let sentiment = (await classifier($input.value))[0];
+	console.log(sentiment);
+	$result.innerHTML = `<strong>${sentiment.label}</strong> (${sentiment.score})`;
+}
+</script>
+
+</body>
+</html>
