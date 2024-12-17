@@ -33,7 +33,7 @@ async function summarize(upload) {
           fileUri: upload.file.uri
         }
     },
-    { text: "Can you summarize this document?" },
+    { text: "Can you summarize this document? Your summary should include three paragraphs at least." },
     ])).response.text();
 
 }
