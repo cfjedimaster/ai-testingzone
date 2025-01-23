@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+
+<h2>Shakespeare Front End</h2>
+
+<div class="twocol">
+	<div>
+		<p>
+		<input id="prompt" placeholder="Enter your prompt here" value="what are the major themes?">
+		<button id="submit">Submit</button>
+		</p>
+
+		<div id="output"></div>
+		<div id="citations"></div>
+
+	</div>
+	<div>
+		<iframe id="pdfviewer"></iframe>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.6/lib/marked.umd.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

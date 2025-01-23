@@ -1,0 +1,18 @@
+
+.twocol {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+
+.twocol div {
+	padding: 10px;
+}
+
+input#prompt {
+	width: 500px;
+}
+
+iframe#pdfviewer {
+	width: 100%;
+	height: 750px;
+}
