@@ -1,0 +1,16 @@
+{
+  "name": "gemini_misc",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "This folder will be for Gemini stuff that doesn't necessarily warrant a full folder/demo/etc. A scratchpad of sorts for me to quickly test stuff.",
+  "main": "test_with_different_models.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.8.0"
+  }
+}
