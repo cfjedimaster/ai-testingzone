@@ -1,0 +1,18 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+label {
+	display: inline-block;
+	width: 150px;
+}
+
+textarea {
+	width: 300px;
+	height: 100px;
+}
+
+input {
+	width: 300px;
+}
+

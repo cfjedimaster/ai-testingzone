@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+
+<h1>Resume Parser</h1>
+
+<p>
+<label for="file">Select your resume: </label>
+<input type="file" id="file" name="file" accept=".pdf"/>
+</p>
+
+<button id="submit">Parse</button>
+
+<form>
+	<p>
+	<label for="firstName">First Name: </label>
+	<input id="firstName">
+	</p>
+	<p>
+	<label for="lastName">Last Name: </label>
+	<input id="lastName">
+	</p>
+	<p>
+	<label for="location">Location: </label>
+	<input id="location">
+	</p>
+	<p>
+	<label for="emailAddress">Email Address: </label>
+	<input id="emailAddress" type="email">
+	</p>
+	<p>
+	<label for="website">Website: </label>
+	<input id="website" type="url">
+	</p>
+	<p>
+	<label for="telephoneNumber">Telephone Number: </label>
+	<input id="telephoneNumber" type="tel">
+	</p>
+	<p>
+	<label for="introduction">Introduction: </label>
+	<textarea id="introduction"></textarea>
+	</p>
+
+	<p>
+	<label for="workHistory">Work History: </label>
+	<textarea id="workHistory"></textarea>
+	</p>
+
+	<p>
+	<label for="skills">Skills: </label>
+	<input id="skills">
+	</p>
+
+</form>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
