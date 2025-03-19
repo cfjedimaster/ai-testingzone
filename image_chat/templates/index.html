@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Image Chat</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+
+	<main>
+	<p>
+	Welcome to Image Chat. This tool lets you have an interactive conversation with Google Gemini's image generation capabilities
+	to work on and improve an image. To begin, simply describe what you would like to start with, for example, "Create a picture of a cat."
+	</p>
+
+	<div id="log">
+	</div>
+
+	<p>
+	<input id="chat" placeholder="Enter your message" value=""> <button id="send">Send</button>
+	</p>
+	</main>
+
+<!-- Ray, ensure you need this -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.6/marked.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

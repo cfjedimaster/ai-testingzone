@@ -5,3 +5,5 @@ trash/
 .vscode/
 private/
 
+.venv
+__pycache__
