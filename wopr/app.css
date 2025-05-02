@@ -1,0 +1,305 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #000;
+	color: #0f0;
+	font-family: monospace;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+.header {
+	text-align: center;
+	padding: 10px;
+	border-bottom: 1px solid #0f0;
+}
+
+.title {
+	font-size: 24px;
+	margin: 0;
+}
+
+.subtitle {
+	font-size: 16px;
+	margin: 5px 0 0;
+	color: #0a0;
+}
+
+.main-content {
+	display: flex;
+	flex: 1;
+}
+
+.map-container {
+	flex: 3;
+	position: relative;
+	height: 100%;
+	border-right: 1px solid #0f0;
+}
+
+#world-map {
+	width: 100%;
+	/* Make SVG fill container */
+	height: 100%;
+}
+
+#world-map path {
+	fill: none !important;
+	/* Override SVG fill */
+	stroke: #0f0;
+	/* Green lines */
+	stroke-width: 0.6;
+	/* Adjust as needed */
+}
+
+/* Optional: Slightly thicker lines for highlighted countries */
+#world-map #US,
+/* Target by ID if paths have them */
+#world-map #CA,
+#world-map #RU {
+	/* Or target by class if needed */
+	/* stroke-width: 1; */
+}
+
+/* Hide the default circles if not desired */
+#world-map circle {
+	display: none;
+}
+
+.info-panel {
+	flex: 1;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+}
+
+.info-section {
+	margin-bottom: 15px;
+	border: 1px solid #0f0;
+	padding: 10px;
+	flex: 1;
+}
+
+.info-section h3 {
+	margin-top: 0;
+	border-bottom: 1px solid #0f0;
+	padding-bottom: 5px;
+}
+
+#missile-count {
+	font-size: 24px;
+	text-align: center;
+}
+
+#casualties {
+	font-size: 24px;
+	text-align: center;
+}
+
+.terminal {
+	height: 150px;
+	overflow-y: scroll;
+	font-size: 12px;
+	padding: 5px;
+	background-color: #001100;
+}
+
+.control-panel {
+	padding: 10px;
+	border-top: 1px solid #0f0;
+	display: flex;
+	justify-content: space-around;
+}
+
+button {
+	background-color: #000;
+	color: #0f0;
+	border: 1px solid #0f0;
+	padding: 8px 15px;
+	font-family: monospace;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+button:hover {
+	background-color: #0f0;
+	color: #000;
+}
+
+.missile {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	background-color: #f00;
+	border-radius: 50%;
+	z-index: 100;
+	box-shadow: 0 0 5px #f00;
+}
+
+.explosion {
+	position: absolute;
+	background-color: transparent;
+	border-radius: 50%;
+	z-index: 90;
+	border: 2px solid #f00;
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+.city-marker {
+	position: absolute;
+	width: 6px;
+	height: 6px;
+	background-color: #0f0;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 50;
+}
+
+.city-name {
+	position: absolute;
+	color: #0f0;
+	font-size: 10px;
+	transform: translate(-50%, -150%);
+	text-shadow: 0 0 2px #000;
+	z-index: 50;
+}
+
+#scanline {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background-color: rgba(0, 255, 0, 0.2);
+	z-index: 1000;
+	pointer-events: none;
+}
+
+.crt-effect {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: repeating-linear-gradient(0deg,
+			rgba(0, 0, 0, 0.15),
+			rgba(0, 0, 0, 0.15) 1px,
+			transparent 1px,
+			transparent 2px);
+	pointer-events: none;
+	z-index: 999;
+}
+
+@keyframes flicker {
+	0% {
+		opacity: 0.9;
+	}
+
+	5% {
+		opacity: 1;
+	}
+
+	10% {
+		opacity: 0.9;
+	}
+
+	15% {
+		opacity: 1;
+	}
+
+	20% {
+		opacity: 0.9;
+	}
+
+	25% {
+		opacity: 1;
+	}
+
+	30% {
+		opacity: 0.9;
+	}
+
+	35% {
+		opacity: 1;
+	}
+
+	40% {
+		opacity: 0.9;
+	}
+
+	45% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.9;
+	}
+
+	55% {
+		opacity: 1;
+	}
+
+	60% {
+		opacity: 0.9;
+	}
+
+	65% {
+		opacity: 1;
+	}
+
+	70% {
+		opacity: 0.9;
+	}
+
+	75% {
+		opacity: 1;
+	}
+
+	80% {
+		opacity: 0.9;
+	}
+
+	85% {
+		opacity: 1;
+	}
+
+	90% {
+		opacity: 0.9;
+	}
+
+	95% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0.9;
+	}
+}
+
+.missile-trail-dot {
+	position: absolute;
+	width: 2px;
+	/* Smaller than missile */
+	height: 2px;
+	background-color: rgba(255, 255, 255, 0.8);
+	/* White, slightly transparent */
+	border-radius: 50%;
+	z-index: 95;
+	/* Below missile, above map */
+	pointer-events: none;
+	/* Prevent interaction */
+	opacity: 1;
+	transition: opacity 1.5s ease-out;
+	/* Fade out over 1.5 seconds */
+}
+
+.missile-trail-dot.fading {
+	opacity: 0;
+}
+
+body {
+	animation: flicker 10s infinite;
+}
