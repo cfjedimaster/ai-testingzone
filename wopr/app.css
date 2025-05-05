@@ -30,6 +30,8 @@ body {
 .main-content {
 	display: flex;
 	flex: 1;
+	height2: 780px;
+	max-height: 780px;
 }
 
 .map-container {
