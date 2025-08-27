@@ -1,0 +1,38 @@
+body {
+	padding: 25px;
+	font-family: var(--sl-font-sans);
+	font-weight: var(--sl-font-weight-normal);
+}
+
+div#dropZone {
+	display:none; 
+	width: 400px;
+	height: 400px;
+	background-color: var(--sl-color-primary-50);
+	padding: 10px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 400px;
+	font-size: 26px;
+}
+
+div#comicDisplay {
+	display:none;
+	width: 700px;
+	height: 700px;
+	/* background-color: blue; */
+}
+
+div#comicNav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+div#pageNavigation {
+	justify-self: flex-end;
+}
+
+img#currentPage {
+	max-width: 700px;
+}
