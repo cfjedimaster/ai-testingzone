@@ -113,4 +113,11 @@ async function displayComic(pages, reader) {
 	$currentPage.src = await reader(pages[0]);
 	$prevButton.addEventListener('click', doPrevPage);
 	$nextButton.addEventListener('click', doNextPage);
+
+	// Suggestions by @marypcbuk
+	$currentPage.addEventListener('click', doNextPage);
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'ArrowLeft') doPrevPage();
+        if (event.key === 'ArrowRight') doNextPage();
+    });
 }
