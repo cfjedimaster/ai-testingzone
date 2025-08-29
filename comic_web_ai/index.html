@@ -1,0 +1,52 @@
+<html>
+<head>
+<link
+  rel="stylesheet"
+  media="(prefers-color-scheme:light)"
+  href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css"
+/>
+<link
+  rel="stylesheet"
+  media="(prefers-color-scheme:dark)"
+  href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/dark.css"
+  onload="document.documentElement.classList.add('sl-theme-dark');"
+/>
+
+<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+<link rel="stylesheet" href="app.css" />
+</head>
+
+<body>
+
+<h1>Comic Book Reader</h1>
+
+<div id="dropZone">
+Drop .CBR/.CBZ here.
+</div>
+
+<div id="comicDisplay">
+  <div id="aiSummary">AI Summary to go here</div>
+  <div id="comicNav">
+    <div id="pageNumbers"></div>
+    <div id="pageNavigation">
+      <sl-button-group label="Navigation">
+        <sl-button id="prevButton">Previous</sl-button>
+        <sl-button id="nextButton">Next</sl-button>
+      </sl-button-group>
+    </div>
+  </div>
+  <p>
+  <img id="currentPage">
+  </p>
+</div>
+
+<sl-alert variant="primary" closable id="filetypeAlert">
+	<sl-icon slot="icon" name="info-circle"></sl-icon>
+	Only drag/drop a CBR or CBZ file.
+</sl-alert>
+
+<script src="zip.min.js"></script>
+<script src="unarchiver.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
