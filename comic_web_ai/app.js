@@ -5,7 +5,6 @@ let session;
 
 // used to help guide Chrome AI
 const paragraphSchema = {
-  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Clean Paragraph",
   "description": "A single paragraph of text without multiple consecutive newlines.",
   "type": "string",
@@ -158,9 +157,9 @@ async function handleAISupport(pages, reader, binreader) {
 
 	console.log('status', status);
 	session = await LanguageModel.create({
-		initailPrompts: [{
+		initialPrompts: [{
 			role:"system", 
-			content:"You analyze images that are part of a comic book. Each image represents one page of a story. I will prompt you with the image as well as any previous summary from earlier pages. You should summarize the current image and use any previous summary to help guide you with the current page. If the current page is an advertisement or promotional page, simply return nothing. If the image appears to be a cover, return nothing. Your summary should be one paragraph that is no more than three to four sentences and focused on describing what is being shown on the page. Do not give your opinion on the art or color. Just summarize what happens on the page."
+			content:`You analyze images that are part of a comic book. Each image represents one page of a story. I will prompt you with the image as well as any previous summary from earlier pages. You should summarize the current image and use any previous summary to help guide you with the current page. Your summary should be one paragraph that is no more than three to four sentences and focused on describing what is being shown on the page. Do not give your opinion on the art or color. Just summarize what happens on the page.`
 		}],
 		expectedInputs: [ {type:"image" }],
 		expectedOutputs: [{
@@ -183,59 +182,44 @@ async function handleAISupport(pages, reader, binreader) {
 
 async function doAISummary(pages, reader, binreader) {
 	$aiSummary.innerHTML = "<p>Starting work on AI Summary.</p>";
-	summary = '';
+	summaries = [];
 
-	/* 
-	In my testing, it feels like the model could do 7-10 pages before
-	filling the quota - so I'm going to do it in 6 page 'chunks'.
-	Nope, 10, and made it a variable.
-	*/
-	const CHUNK = 10;
-
-	console.log('TOTAL PAGES', pages.length);
-	for(let i=1; i<pages.length; i+=CHUNK) {
-		console.log('CHUNK',i);
-		let content = [];
-		let x;
-		for(x=0;x<CHUNK;x++) {
-			if(x+i < pages.length) {
-				content.push({type:"image", value: await binreader(pages[x+i])});
-				console.log('page ',x+i);
-			}
-		}
-
-		console.log('beginning prompt');
-		let response = await session.prompt([{
-			role:"user", 
-			content
-		}], { responseConstraint: paragraphSchema });
-
-		console.log('resp?', response);
-		console.log(session);
-		console.log('early exit in chunk ',i);
-
-		$aiSummary.innerHTML = `<p>Completed ${x} pages.</p>`;
-
-		return;
-	}
-	return;
 	// note, start at 1 to skip cover
-	for(let i=1;i<pages.length;i++) {
+	for(let i=1;i<Math.min(6,pages.length);i++) {
 		console.log(`doing page ${i+1}`);
-		console.log(session);
-		console.log(await binreader(pages[i]));
 		let response = await session.prompt([{
 			role:"user", 
 			content: [
 				{ type:"image", value: await binreader(pages[i]) },
-				{ type:"image", value: await binreader(pages[i+1]) },
-				{ type:"image", value: await binreader(pages[i+2]) },
-				{ type:"image", value: await binreader(pages[i+3]) }
 			]
-		}]);
-		console.log('resp?', response);
-		console.log(session);
-		console.log('early exit');
-		return;		
+		}], { responseConstraint: paragraphSchema });
+
+		console.log('resp?', JSON.parse(response));
+		if(response !== 'COVER') summaries.push(response);
+		$aiSummary.innerHTML = `<p>Analyzed page ${i+1}.</p>`;
+
+		//if(i> 10) { console.log('early exit'); return; }
 	}
+
+	if(summaries.length) {
+		// new session to summarize the summaries
+		let availability = await Summarizer.availability();
+		console.log('summarizer availability', availability);
+		let summarizer = await Summarizer.create({
+			format:'plain-text',
+			length:'long',
+			monitor(m) {
+   				 m.addEventListener('downloadprogress', (e) => {
+			      console.log(`Downloading summarizer: ${e.loaded * 100}%`);
+    			});
+  			}
+		});	
+		/*
+		let summary = await summarizer.summarize(summaries.join('\n\n'), {
+			context: 'Your input is a series of summaries of pages from a comic page. From these summaries, attempt to create a summary of the whole comic book.',
+		});
+		console.log(summary);
+		$aiSummary.innerHTML = `<p><strong>AI Generated Summary:</strong> ${summary}</p>`;
+		*/
+	} else $aiSummary.innerHTML = "<p>I was unable to generate summaries, I'm truly sorry.</p>";
 }
