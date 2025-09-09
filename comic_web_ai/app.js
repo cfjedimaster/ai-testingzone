@@ -86,13 +86,11 @@ async function handleRar(d) {
 async function handleZip(d) {
 
 	const getB64 = async p => {
-		let dw = new zip.Data64URIWriter();
-		return await p.getData(dw);
+		return await p.getData(new zip.Data64URIWriter());
 	}
 
 	const getBlob = async p => {
-		let bw = new zip.BlobReader();
-		return await p.getData(bw);
+		return await p.getData(new zip.BlobWriter());
 	}
 
 	console.log('processing zip');
