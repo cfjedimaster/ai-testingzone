@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', init, false);
 
 let $filetypeAlert, $currentPage, $pageNumbers, $dropZone, $comicDisplay, $prevButton, $nextButton, $aiSummary;
-let session;
+let session, summarizer;
 
 // used to help guide Chrome AI
 const paragraphSchema = {
@@ -156,6 +156,8 @@ async function handleAISupport(pages, reader, binreader) {
 	}
 
 	console.log('status', status);
+	$aiSummary.innerHTML = 'Setting up the prompt model.';
+
 	session = await LanguageModel.create({
 		initialPrompts: [{
 			role:"system", 
@@ -169,15 +171,28 @@ async function handleAISupport(pages, reader, binreader) {
 		monitor(m) {
 			m.addEventListener('downloadprogress', e => {
 				console.log(`AI model downloaded ${e.loaded * 100}%`);
-				if(e === 1) doAISummary(pages, reader, binreader);
+				$aiSummary.innerHTML = `<p>AI support is enabled, but must be downloaded. Currently at ${Math.floor(e.loaded * 100)}%.</p>`;				
+				
 			});
 		}
 	});
 
-	if(status === 'downloadable' || status == 'downloading') {
-		$aiSummary.innerHTML = "<p>AI support is enabled, but must be downloaded. Please stand by.</p>";
-		return;
-	} else doAISummary(pages, reader, binreader);
+	let availability = await Summarizer.availability();
+	console.log('summarizer availability', availability);
+	$aiSummary.innerHTML = 'Setting up the summary model.';
+	summarizer = await Summarizer.create({
+		format:'plain-text',
+		length:'long',
+		type:'tldr',
+		monitor(m) {
+				m.addEventListener('downloadprogress', (e) => {
+				console.log(`Downloading summarizer: ${e.loaded * 100}%`);
+				$aiSummary.innerHTML = `<p>AI summaries are enabled, but must be downloaded.Currently at ${Math.floor(e.loaded * 100)}%.</p>`;				
+			});
+		}
+	});	
+
+	doAISummary(pages, reader, binreader);
 }
 
 async function doAISummary(pages, reader, binreader) {
@@ -185,7 +200,7 @@ async function doAISummary(pages, reader, binreader) {
 	summaries = [];
 
 	// note, start at 1 to skip cover
-	for(let i=1;i<Math.min(6,pages.length);i++) {
+	for(let i=1;i<Math.min(50,pages.length);i++) {
 		console.log(`doing page ${i+1}`);
 		let response = await session.prompt([{
 			role:"user", 
@@ -198,28 +213,15 @@ async function doAISummary(pages, reader, binreader) {
 		if(response !== 'COVER') summaries.push(response);
 		$aiSummary.innerHTML = `<p>Analyzed page ${i+1}.</p>`;
 
-		//if(i> 10) { console.log('early exit'); return; }
 	}
 
 	if(summaries.length) {
-		// new session to summarize the summaries
-		let availability = await Summarizer.availability();
-		console.log('summarizer availability', availability);
-		let summarizer = await Summarizer.create({
-			format:'plain-text',
-			length:'long',
-			monitor(m) {
-   				 m.addEventListener('downloadprogress', (e) => {
-			      console.log(`Downloading summarizer: ${e.loaded * 100}%`);
-    			});
-  			}
-		});	
-		/*
+
 		let summary = await summarizer.summarize(summaries.join('\n\n'), {
 			context: 'Your input is a series of summaries of pages from a comic page. From these summaries, attempt to create a summary of the whole comic book.',
 		});
 		console.log(summary);
 		$aiSummary.innerHTML = `<p><strong>AI Generated Summary:</strong> ${summary}</p>`;
-		*/
+		
 	} else $aiSummary.innerHTML = "<p>I was unable to generate summaries, I'm truly sorry.</p>";
 }
