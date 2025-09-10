@@ -196,11 +196,18 @@ async function handleAISupport(pages, reader, binreader) {
 async function doAISummary(pages, reader, binreader) {
 	$aiSummary.innerHTML = "<p>Starting work on AI Summary.</p>";
 	summaries = [];
+	let newSession = await session.clone();
 
 	// note, start at 1 to skip cover
 	for(let i=1;i<Math.min(50,pages.length);i++) {
 		console.log(`doing page ${i+1}`);
-		let response = await session.prompt([{
+		console.log(`${newSession.inputUsage}/${newSession.inputQuota}`);
+		if(newSession.inputUsage/newSession.inputQuota > .75) {
+			console.log('need to nuke the session, getting close to full');
+
+			newSession = await session.clone();
+		}
+		let response = await newSession.prompt([{
 			role:"user", 
 			content: [
 				{ type:"image", value: await binreader(pages[i]) },
