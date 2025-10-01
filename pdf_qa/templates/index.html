@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PDF QA</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+	
+	<header>
+		<h1>PDF QA</h1>
+	</header>
+
+	<p class="intro">
+	This is a simple Question and Answer UI for your document. To begin, drag and drop a PDF document on the left side of the application. The PDF will be uploaded to Gemini and rendered in a preview. A summary will be returned on the right hand side
+	and you can begin asking questions.
+	</p>
+
+	<main>
+		<div class="section" id="dropZone">
+			<p id="instructions">
+			Drag/drop a PDF here to begin the process.
+			</p>
+			<div id="pdf-viewer"></div>
+		</div>
+  		<div class="section">
+			<div id="chatUI">
+				<div id="chat"></div>
+				<div>
+					<input type="input" id="userInput" disabled> 
+					<button id="chatBtn" disabled>Chat</button>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script defer type="module" src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
