@@ -1,10 +1,8 @@
 from google import genai
 from google.genai import types
-import time
-import os 
 
 # Defines the name of our store
-STORE_NAME = "fileSearchStores/shakespeare-works-q790n853gnh3"
+STORE_NAME = "fileSearchStores/shakespeare-works-b5zezkvl23pb"
 
 client = genai.Client()
 
