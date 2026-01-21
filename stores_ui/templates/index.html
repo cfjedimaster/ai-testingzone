@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<section>
+    <h2>Existing Stores</h2>
+    <table-sort numeric="2,4">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th># Docs</th>
+                <th>Last Updated</th>
+                <th>Size</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for store in stores %}
+            <tr>
+                <td>{{ store.name }}</td>
+                <td>{{ store.document_count }}</td>
+                <td>{{ store.last_updated }}</td>
+                <td data-sortval="{{store.size}}">{{ store.size | convert_size }}</td>
+                <td>
+                    <!-- Linking to a hypothetical edit page using the store ID -->
+                    <a href="store.html?id={{ store.id }}">Edit</a> |
+                    <a href="#">Delete</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">No stores found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </table-sort>
+
+    <form>
+        <input type="text" id="storeName" name="storeName" required placeholder="Store Name">
+        <button type="submit">Add New Store</button>
+    </form>
+
+</section>
+
+{% endblock %}

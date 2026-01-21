@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini File Stores - Store Detail</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+    <header>
+        <h1>Store: Store A</h1>
+        <nav>
+            <a href="index.html">Stores</a> |
+            <a href="search.html">Search</a>
+        </nav>
+        <p><a href="index.html">Back to Stores</a></p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Files in Store</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Last Updated</th>
+                        <th>State</th>
+                        <th>Size</th>
+                        <th>MIME Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>document1.pdf</td>
+                        <td>2024-01-15 10:30 AM</td>
+                        <td>Active</td>
+                        <td>1.2 MB</td>
+                        <td>application/pdf</td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td>image1.jpg</td>
+                        <td>2024-01-14 3:45 PM</td>
+                        <td>Active</td>
+                        <td>500 KB</td>
+                        <td>image/jpeg</td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                    <tr>
+                        <td>text1.txt</td>
+                        <td>2024-01-13 11:20 AM</td>
+                        <td>Processing</td>
+                        <td>10 KB</td>
+                        <td>text/plain</td>
+                        <td><a href="#">Delete</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Upload New Document</h2>
+            <form>
+                <label for="fileUpload">Select File:</label>
+                <input type="file" id="fileUpload" name="fileUpload" required>
+                <label for="metadata">JSON Metadata (optional):</label>
+                <textarea id="metadata" name="metadata" rows="4" placeholder='{"key": "value"}'></textarea>
+                <button type="submit">Upload</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Gemini File Stores Mockup</p>
+    </footer>
+</body>
+</html>

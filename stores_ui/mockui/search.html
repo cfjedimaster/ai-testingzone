@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini File Stores - Search Tester</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+    <header>
+        <h1>Search Tester</h1>
+        <nav>
+            <a href="index.html">Stores</a> |
+            <a href="search.html">Search</a>
+        </nav>
+        <p>Test search functionality across file stores</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Search Form</h2>
+            <form>
+                <label for="storeSelect">Select Store:</label>
+                <select id="storeSelect" name="storeSelect" required>
+                    <option value="">Choose a store...</option>
+                    <option value="Store A">Store A</option>
+                    <option value="Store B">Store B</option>
+                    <option value="Store C">Store C</option>
+                </select>
+                <label for="query">Search Query:</label>
+                <input type="text" id="query" name="query" required>
+                <label for="metadata">JSON Metadata (optional):</label>
+                <textarea id="metadata" name="metadata" rows="4" placeholder='{"filters": {"type": "pdf"}}'></textarea>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Search Results</h2>
+            <ul>
+                <li>
+                    <strong>document1.pdf</strong> - Found in Store A<br>
+                    Relevance: 0.95<br>
+                    Metadata: {"type": "pdf", "pages": 10}
+                </li>
+                <li>
+                    <strong>image1.jpg</strong> - Found in Store A<br>
+                    Relevance: 0.87<br>
+                    Metadata: {"type": "image", "resolution": "1920x1080"}
+                </li>
+                <li>
+                    <strong>text1.txt</strong> - Found in Store B<br>
+                    Relevance: 0.72<br>
+                    Metadata: {"type": "text", "encoding": "utf-8"}
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Gemini File Stores Mockup</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini File Stores - Main</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+    <header>
+        <h1>Gemini File Stores</h1>
+        <nav>
+            <a href="index.html">Stores</a> |
+            <a href="search.html">Search</a>
+        </nav>
+        <p>Manage your file stores</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Existing Stores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Document Count</th>
+                        <th>Last Updated</th>
+                        <th>Size</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Store A</td>
+                        <td>15</td>
+                        <td>2024-01-15 10:30 AM</td>
+                        <td>2.5 MB</td>
+                        <td>
+                            <a href="store.html?name=Store%20A">Edit</a> |
+                            <a href="#">Delete</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Store B</td>
+                        <td>8</td>
+                        <td>2024-01-10 2:15 PM</td>
+                        <td>1.2 MB</td>
+                        <td>
+                            <a href="store.html?name=Store%20B">Edit</a> |
+                            <a href="#">Delete</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Store C</td>
+                        <td>22</td>
+                        <td>2024-01-20 9:45 AM</td>
+                        <td>4.1 MB</td>
+                        <td>
+                            <a href="store.html?name=Store%20C">Edit</a> |
+                            <a href="#">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <script src="{{ url_for('static', filename='table-sorter.js') }}"></script>
+
+        <section>
+            <h2>Add New Store</h2>
+            <form>
+                <label for="storeName">Store Name:</label>
+                <input type="text" id="storeName" name="storeName" required>
+                <button type="submit">Add Store</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Gemini File Stores Mockup</p>
+    </footer>
+</body>
+</html>
