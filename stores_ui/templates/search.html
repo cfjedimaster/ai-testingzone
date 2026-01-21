@@ -7,34 +7,70 @@
         <label for="storeSelect">Select Store:</label>
         <select id="storeSelect" name="storeSelect" required>
             <option value="">Choose a store...</option>
-            <option value="Store A">Store A</option>
-            <option value="Store B">Store B</option>
-            <option value="Store C">Store C</option>
+            {% for store in stores %}
+            <option value="{{ store.name }}">{{ store.display_name }}</option>
+            {% endfor %}
         </select>
         <label for="query">Search Query:</label>
         <input type="text" id="query" name="query" required>
-        <label for="metadata">JSON Metadata (optional):</label>
-        <textarea id="metadata" name="metadata" rows="4" placeholder='{"filters": {"type": "pdf"}}'></textarea>
+        <label for="metadata">Metadata (optional):</label>
+        <input type="text" id="metadata" name="metadata" placeholder='{"filters": {"type": "pdf"}}'>
         <button type="submit">Search</button>
     </form>
 
-    <h2>Search Results</h2>
-    <ul>
-        <li>
-            <strong>document1.pdf</strong> - Found in Store A<br>
-            Relevance: 0.95<br>
-            Metadata: {"type": "pdf", "pages": 10}
-        </li>
-        <li>
-            <strong>image1.jpg</strong> - Found in Store A<br>
-            Relevance: 0.87<br>
-            Metadata: {"type": "image", "resolution": "1920x1080"}
-        </li>
-        <li>
-            <strong>text1.txt</strong> - Found in Store B<br>
-            Relevance: 0.72<br>
-            Metadata: {"type": "text", "encoding": "utf-8"}
-        </li>
-    </ul>
+    <h2>Result</h2>
+    <div id="result"></div>
+
+
+<script>
+let $store, $query, $metadata, $result;
+
+document.addEventListener('DOMContentLoaded', init, false);
+async function init() {
+    $store = document.querySelector('#storeSelect');
+    $query = document.querySelector('#query');
+    $metadata = document.querySelector('#metadata');
+    $result = document.querySelector('#result');
+    document.querySelector('form').addEventListener('submit', search);
+}
+
+async function search(e) {
+    e.preventDefault();
+    $result.innerHTML = '';
+
+    let storeName = $store.value;
+    let query = $query.value;
+    let metadata = $metadata.value;
+
+    if(!storeName.trim() || !query.trim()) {
+        alert('Please select a store and enter a search query.');
+        return;
+    }
+
+    let payload = {
+        store: storeName,
+        query, 
+        metadata
+    };
+
+    console.log('Searching with payload:', payload);
+    $result.innerHTML = '<i>Searching...</i>';
+
+    let results = await fetch('/storesearch', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    let data = await results.json();
+    console.log('Search results:', data);
+
+    $result.innerHTML = marked.parse(data.result);
+}
+</script>
+
+</section>
+
 
 {% endblock %}

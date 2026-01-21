@@ -6,6 +6,7 @@
     <title>Gemini File Stores - Main</title>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <header>
@@ -17,9 +18,7 @@
     </header>
 
     <main>
-
 {% block content %}{% endblock %}
-
     </main>
 
     <footer>

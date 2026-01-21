@@ -18,7 +18,7 @@
         <tbody>
             {% for store in stores %}
             <tr>
-                <td>{{ store.name }}</td>
+                <td>{{ store.display_name }}</td>
                 <td>{{ store.document_count }}</td>
                 <td>{{ store.last_updated }}</td>
                 <td data-sortval="{{store.size}}">{{ store.size | convert_size }}</td>

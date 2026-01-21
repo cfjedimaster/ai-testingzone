@@ -1,8 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from gemini_service import GeminiService
 import math 
 
 app = Flask(__name__)
+service = GeminiService()
 
 @app.template_filter('convert_size')
 def convert_size(size_bytes):
@@ -24,13 +25,24 @@ def convert_size(size_bytes):
 
 @app.route('/')
 def index():
-    service = GeminiService()
     stores = service.list_stores()
     return render_template('index.html', stores=stores)
 
 @app.route('/search')
 def search():
-    return render_template('search.html')
+    stores = service.list_stores()
+    return render_template('search.html', stores=stores)
+
+@app.route('/storesearch', methods=['POST'])
+def storesearch():
+    data = request.get_json()
+    store = data.get('store')
+    prompt = data.get('query')
+    metadata_filter = data.get('metadata')
+    print(f"Searching store: {store} with prompt: {prompt} and metadata_filter: {metadata_filter}")
+    service = GeminiService()
+    result = service.search_store(store, prompt, metadata_filter)
+    return jsonify({'result': result})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
