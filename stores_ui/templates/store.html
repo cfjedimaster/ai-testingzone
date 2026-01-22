@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<section>
+    <h2>Store Details</h2>
+    <p><strong>Name:</strong> {{ store.display_name }}</p>
+    <p><strong>ID:</strong> {{ store.id }}</p>
+    <p><strong>Document Count:</strong> {{ store.document_count }}</p>
+    <p><strong>Size:</strong> {{ store.size | convert_size }}</p>
+    <p><strong>Last Updated:</strong> {{ store.last_updated }}</p>
+</section>
+
+<section>
+    <h3>Files</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Size</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in store.files %}
+            <tr>
+                <td>{{ file.name }}</td>
+                <td>{{ file.size | convert_size }}</td>
+                <td>{{ file.last_updated }}</td>
+                <td><a href="{{ url_for('delete_file', file_id=file.id, store_id=store.id) }}">Delete</a></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">No files found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        Select one or more files to add to the store.
+    </p>
+    <input type="file" id="fileInput" multiple>
+    <button id="uploadBtn">Upload Files</button>
+    <div id="uploadStatus"></div>
+
+    <script>
+    let $uploadStatus;
+    document.addEventListener('DOMContentLoaded', init, false);
+
+    async function init() {
+        $uploadStatus = document.querySelector('#uploadStatus');
+        document.querySelector('#uploadBtn').addEventListener('click', uploadFiles);
+    }
+
+    async function uploadFiles() {
+        $uploadStatus.innerText = '';
+        let files = document.querySelector('#fileInput').files;
+        if(!files.length) {
+            alert('Please select at least one file to upload.');
+            return;
+        }
+        let formData = new FormData();
+
+        // Get store ID from URL
+        let params = new URLSearchParams(window.location.search);
+        formData.append('store_id', params.get('id'));
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+
+        $uploadStatus.innerText = 'Uploading files...';
+
+        let response = await fetch('/uploadToStore', {
+            method: 'POST',
+            body: formData
+        });
+
+        let data = await response.json();
+        $uploadStatus.innerText = 'Done uploading files.';;
+
+    }
+    </script>
+</section>
+
+{% endblock %}

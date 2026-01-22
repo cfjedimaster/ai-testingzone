@@ -12,10 +12,10 @@
             {% endfor %}
         </select>
         <label for="query">Search Query:</label>
-        <input type="text" id="query" name="query" required>
+        <input type="search" id="query" name="query" required>
         <label for="metadata">Metadata (optional):</label>
-        <input type="text" id="metadata" name="metadata" placeholder='{"filters": {"type": "pdf"}}'>
-        <button type="submit">Search</button>
+        <input type="text" id="metadata" name="metadata" placeholder='filename = "something.pdf"'>
+        <button type="submit">Search this Store</button>
     </form>
 
     <h2>Result</h2>

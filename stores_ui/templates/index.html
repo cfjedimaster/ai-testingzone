@@ -23,9 +23,8 @@
                 <td>{{ store.last_updated }}</td>
                 <td data-sortval="{{store.size}}">{{ store.size | convert_size }}</td>
                 <td>
-                    <!-- Linking to a hypothetical edit page using the store ID -->
-                    <a href="store.html?id={{ store.id }}">Edit</a> |
-                    <a href="#">Delete</a>
+                    <a href="{{ url_for('store', id=store.id) }}">View</a> |
+                    <a href="{{ url_for('delete_store', store_id=store.id) }}">Delete</a>
                 </td>
             </tr>
             {% else %}
@@ -37,8 +36,8 @@
     </table>
     </table-sort>
 
-    <form>
-        <input type="text" id="storeName" name="storeName" required placeholder="Store Name">
+    <form method="post" action="/addstore">
+        <input type="text" id="store_name" name="store_name" required placeholder="Store Name">
         <button type="submit">Add New Store</button>
     </form>
 

@@ -5,3 +5,7 @@ section {
 table {
     width: 100%;
 }
+
+input[type="search"], input#metadata {
+    width: 100%;
+}
