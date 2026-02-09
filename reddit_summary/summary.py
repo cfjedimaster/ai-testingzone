@@ -13,7 +13,7 @@ def summarize():
         types.Content(
             role="user",
             parts=[
-                types.Part.from_text(text="""Look at this page in Reddit (https://www.reddit.com/r/webflow/new/) and scan the titles of the most recent posts to see if anything needs a developer to respond or is overly critical of Webflow. When reporting on threads, always include the URL to the thread."""),
+                types.Part.from_text(text="""Look at this page in Reddit (https://www.reddit.com/r/astrojs/new/) and scan the titles of the most recent posts to see if anything needs a developer to respond or is overly critical of Astro. When reporting on threads, always include the URL to the thread."""),
             ],
         ),
     ]
@@ -42,9 +42,9 @@ def turn_to_json(input):
             role="user",
             parts=[
                 types.Part.from_text(text=f"""
-I used a previous prompt to parse a URL and provide a report on issues that need a developer, and issues that reflect on the company. Here is that prompt:
-"Look at this page in Reddit (https://www.reddit.com/r/webflow/new/) and scan the titles of the most recent posts to see if anything needs a developer to respond or is overly critical of Webflow. When reporting on threads, always include the URL to the thread."
-This prompt makes use of URL tools and the SDK does not allow you to create structured output. So I want you to take the output and return it in my designed JSON format. Here is the previous output, in Markdown:
+I used a previous prompt to parse a URL and provide a report on issues that need a developer, and issues that reflect on the technology.
+
+That prompt made use of URL tools and the SDK does not allow you to create structured output. So I want you to take the output and return it in my designed JSON format. Here is the previous output, in Markdown:
                                      
 {input}                                     
 """),
